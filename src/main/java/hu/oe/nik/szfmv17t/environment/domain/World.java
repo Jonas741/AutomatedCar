@@ -2,6 +2,7 @@ package hu.oe.nik.szfmv17t.environment.domain;
 
 import hu.oe.nik.szfmv17t.environment.interfaces.IWorldObject;
 import hu.oe.nik.szfmv17t.environment.interfaces.IWorldVisualisation;
+import hu.oe.nik.szfmv17t.environment.utils.CollisionDetector;
 import hu.oe.nik.szfmv17t.environment.utils.XmlParser;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,19 @@ public class World implements IWorldVisualisation {
     public void updateWorld() {
         for (IWorldObject object : worldObjects) {
             if (object instanceof CollidableBase) {
-                ///TODO call collisiondetection
                 ((CollidableBase) object).updateWorldObject();
+                checkIfCollided(object);
+            }
+        }
+    }
+
+    private void checkIfCollided(IWorldObject object1) {
+        for (IWorldObject object2 : worldObjects) {
+            if (object2 instanceof CollidableBase && object2.equals(object1) == false) {
+                boolean isCollided = CollisionDetector.collide((CollidableBase)object1, (CollidableBase)object2);
+                if (isCollided) {
+                    // TODO nincs fizikus csapattól interfész az ütközés jelzésére
+                }
             }
         }
     }

@@ -3,9 +3,9 @@ package hu.oe.nik.szfmv17t.automatedcar;
 
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.powertrainsystem.PowertrainSystem;
-import hu.oe.nik.szfmv17t.environment.domain.Car;
+import hu.oe.nik.szfmv17t.environment.domain.CollidableBase;
 
-public class AutomatedCar extends Car{
+public class AutomatedCar extends CollidableBase {
 
 	private PowertrainSystem powertrainSystem;
 	private double wheelAngle = 0;
