@@ -2,6 +2,7 @@ package hu.oe.nik.szfmv17t;
 
 import hu.oe.nik.szfmv17t.automatedcar.AutomatedCar;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.HMI;
+import hu.oe.nik.szfmv17t.environment.domain.Car;
 import hu.oe.nik.szfmv17t.environment.domain.World;
 import hu.oe.nik.szfmv17t.visualisation.CourseDisplay;
 import hu.oe.nik.szfmv17t.visualisation.HmiJPanel;
@@ -23,7 +24,8 @@ public class Main {
 		AutomatedCar car = new AutomatedCar(480,800,108,240,0d,0,"car_1_white.png",200d,0d,0d);
 
 		// create an automated car
-
+                Car npcCar = new Car(680,600,108,240,0d,0,"car_1_red.png",200d,0d,0d);
+                
 		//create HMI - Human machine interface
 		HMI hmi = new HMI();
 		HmiJPanel.setHmi(hmi);
@@ -31,6 +33,7 @@ public class Main {
 
 		// add car to the world
 		w.addObjectToWorld(car);
+                w.addObjectToWorld(npcCar);
 
 		// init visualisation module with the world
 		vis.init(w);

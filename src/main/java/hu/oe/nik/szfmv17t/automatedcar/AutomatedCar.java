@@ -1,9 +1,11 @@
 package hu.oe.nik.szfmv17t.automatedcar;
 
 
+import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.powertrainsystem.PowertrainSystem;
 import hu.oe.nik.szfmv17t.environment.domain.Car;
+import hu.oe.nik.szfmv17t.environment.utils.Vector2d;
 
 public class AutomatedCar extends Car{
 
@@ -23,6 +25,8 @@ public class AutomatedCar extends Car{
 		// place a driver into the car for demonstrating the signal sending mechanism
 		new Driver();
 	}
+   @Override
+   public void step() {}
 
 	public void drive() {
 		// call components
