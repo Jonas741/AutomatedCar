@@ -45,21 +45,20 @@ public class CollidableBase extends WorldObjectBase implements ICollidableObject
     }
 
     public void step() {
-        listRotate(new double[]{Math.round(this.getCenterX()),Math.round(this.getCenterY()), way.get(0).getX(), way.get(0).getY()});
-        directionVector = way.get(0).substract(new Vector2d(this.getCenterX(), this.getCenterY())); //new double[]{(way.get(0)[0] - getCenterX()), (way.get(0)[1] - getCenterY())};
-        double vectorLength =way.get(0).length(new Vector2d(this.getCenterX(), this.getCenterY())); //vectorLength(new double[]{(int)Math.round(this.getCenterX()), (int)Math.round(this.getCenterY()), way.get(0)[0], way.get(0)[1]});
+        listRotate(new double[]{Math.round(this.position.getMinimumX()),Math.round(this.position.getMinimumY()), way.get(0).getX(), way.get(0).getY()});
+        directionVector = way.get(0).substract(new Vector2d(this.position.getMinimumX(), this.position.getMinimumY()));
+        double vectorLength =way.get(0).length(new Vector2d(this.position.getMinimumX(), this.position.getMinimumY()));
         Vector2d oneStep = way.get(0).unitDirection(directionVector,vectorLength);
-        //irányba kell állítani az elemet !
-        // figyelni kell h ha ütközött akkor a  AxisAngle és a DirectionAngle eltér! irányvektro letárolása !
         //DirectionAngle:
-        this.setDirectionAngle(Math.atan2(directionVector.getY(),directionVector.getX()));//??
+        this.setDirectionAngle(Math.atan2(directionVector.getY(),directionVector.getX()));
         //AxisAngle:
+        this.setAxisAngle(Math.atan2(directionVector.getY(),directionVector.getX()));
         
         position.setPositionX(position.getMinimumX()+ oneStep.getX() * meterToCors.meterToCoordinate(getSpeed()));
         position.setPositionY(position.getMinimumY() + oneStep.getY() * meterToCors.meterToCoordinate(getSpeed()));
     }
 
-    public void updateWorldObject() {step();}
+    public void updateWorldObject() { step();}
     
     public void listRotate(double[] array)
     {

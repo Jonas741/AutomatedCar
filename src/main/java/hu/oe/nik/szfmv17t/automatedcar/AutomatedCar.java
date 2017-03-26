@@ -26,7 +26,9 @@ public class AutomatedCar extends Car{
 		new Driver();
 	}
    @Override
-   public void step() {}
+   public void step() {
+      //TODO
+    }
 
 	public void drive() {
 		// call components
