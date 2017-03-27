@@ -68,8 +68,12 @@ public class CollidableBase extends WorldObjectBase implements ICollidableObject
             way.add(way.size() - 1, temp);
         }
     }
-    
-    private void wayGenerator() {// hogy emeljem be ide a világ méretét ?
+
+
+    public void updateWorldObject() {step();}
+  
+    private void wayGenerator() {
+
         for (int i = 0; i < 10; i++) {
             way.add(new Vector2d(random.nextInt(4820), random.nextInt(2700)));
         }
