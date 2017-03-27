@@ -1,9 +1,11 @@
 package hu.oe.nik.szfmv17t.automatedcar;
 
 
+import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.powertrainsystem.PowertrainSystem;
 import hu.oe.nik.szfmv17t.environment.domain.Car;
+import hu.oe.nik.szfmv17t.environment.utils.Vector2d;
 
 public class AutomatedCar extends Car{
 
@@ -16,15 +18,17 @@ public class AutomatedCar extends Car{
 
 		// Compose our car from brand new system components
 		// The car has to know its PowertrainSystem, to get its coordinates
-
-
-	   	powertrainSystem = new PowertrainSystem(((int)(positionX)),((int)(positionY)), mass);
+		powertrainSystem = new PowertrainSystem(((int)(positionX+0.5d)),((int)(positionY+0.5d)), mass);
 		// The rest of the components use the VirtualFunctionBus to communicate,
 		// they do not communicate with the car itself
 
 		// place a driver into the car for demonstrating the signal sending mechanism
 		new Driver();
 	}
+   @Override
+   public void step() {
+      //TODO
+    }
 
 	public void drive() {
 		// call components
