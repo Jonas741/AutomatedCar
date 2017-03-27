@@ -70,7 +70,6 @@ public class CollidableBase extends WorldObjectBase implements ICollidableObject
     }
 
 
-    public void updateWorldObject() {step();}
   
     private void wayGenerator() {
 
