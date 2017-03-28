@@ -1,7 +1,6 @@
 package hu.oe.nik.szfmv17t.automatedcar;
 
 
-import com.sun.org.apache.xerces.internal.impl.xpath.XPath;
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.powertrainsystem.PowertrainSystem;
 import hu.oe.nik.szfmv17t.environment.domain.Car;
@@ -18,28 +17,32 @@ public class AutomatedCar extends Car{
 
 		// Compose our car from brand new system components
 		// The car has to know its PowertrainSystem, to get its coordinates
-		powertrainSystem = new PowertrainSystem(((int)(positionX+0.5d)),((int)(positionY+0.5d)), mass);
+
+
+	   	powertrainSystem = new PowertrainSystem(((int)(positionX)),((int)(positionY)), mass);
 		// The rest of the components use the VirtualFunctionBus to communicate,
 		// they do not communicate with the car itself
 
 		// place a driver into the car for demonstrating the signal sending mechanism
 		new Driver();
 	}
-   @Override
-   public void step() {
-      //TODO
-    }
 
 	public void drive() {
 		// call components
 		VirtualFunctionBus.loop();
-		// Update the position and orientation of the car
-		position.getCenter().setX(powertrainSystem.getX());
-		position.getCenter().setX(powertrainSystem.getY());
-		wheelAngle = (float)powertrainSystem.getWheelAngle();
+
+		this.setDirectionAngle(powertrainSystem.getWheelAngle());
 
 		this.speed = this.powertrainSystem.getVelocity();
 		System.out.println("Speed: " + speed + "m/s");
 		System.out.println("Wheel angle: " + wheelAngle);
+	}
+
+	@Override
+	public void updateWorldObject() {
+		Vector2d direction = new Vector2d(Math.cos(this.getDirectionAngle()), Math.sin(this.getDirectionAngle ()));
+
+		position.setPositionX(position.getMinimumX() + direction.getX() * getSpeed());
+		position.setPositionY(position.getMinimumY() + direction.getY() * getSpeed());
 	}
 }
