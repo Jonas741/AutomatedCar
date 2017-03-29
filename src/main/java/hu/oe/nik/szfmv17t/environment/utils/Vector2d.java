@@ -62,7 +62,7 @@ public class Vector2d {
         return  new Vector2d(this.x + v2.x, this.y + v2.y);
     }
 
-    public Vector2d substract (Vector2d v2)// irányvektro is lehet this-V2
+    public Vector2d substract (Vector2d v2)
     {
         return  new Vector2d(this.x - v2.x, this.y - v2.y);
     }
