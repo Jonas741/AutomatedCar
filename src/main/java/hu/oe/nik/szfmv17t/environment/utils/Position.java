@@ -35,7 +35,7 @@ public class Position {
 
     private Vector2d rotatePoint (double posX, double posY, double angle)
     {
-        Vector2d originalReferencePoint = new Vector2d(minimumX, minimumY);
+        Vector2d originalReferencePoint = new Vector2d(this.minimumX, this.minimumY);
         Vector2d calculatedReferencePoint = new Vector2d(posX, posY);
 
         return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
@@ -98,14 +98,16 @@ public class Position {
     public void setPositionX (double value)
     {
         this.minimumX = value;
-        this.maximumX = value + this.width;
+        Vector2d tempX = rotatePoint(value + this.width, this.minimumY, axisAngle);
+        this.maximumX = tempX.getX();
         this.calculateCenter();
     }
 
     public void setPositionY (double value)
     {
         this.minimumY = value;
-        this.maximumY = value + this.height;
+        Vector2d tempY = rotatePoint(value + this.height, this.minimumX, axisAngle);
+        this.maximumY = tempY.getY();
         this.calculateCenter();
     }
 
