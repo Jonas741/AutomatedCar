@@ -5,6 +5,7 @@
  */
 package hu.oe.nik.szfmv17t.environment;
 
+import hu.oe.nik.szfmv17t.environment.domain.Bycicle;
 import hu.oe.nik.szfmv17t.environment.domain.Car;
 import hu.oe.nik.szfmv17t.environment.domain.CollidableBase;
 import hu.oe.nik.szfmv17t.environment.utils.CollisionDetector;
@@ -24,8 +25,8 @@ public class CollisionDetectorTest {
     public void setUp() throws Exception {
         /* stuff written here runs before the tests */
 
-        first = new Car(0d, 0d, 10d, 10d, 0d, 0, "test.jpg", 1000d, 0d, 0d);
-        second = new Car(50d, 50d, 10d, 10d, 0d, 0, "test.jpg", 1000d, 0d, 0d);
+        first = new Bycicle(0d, 0d, 10d, 10d, 0d, 0, "test.jpg", 1000d, 0d, 0d);
+        second = new Bycicle(50d, 50d, 10d, 10d, 0d, 0, "test.jpg", 1000d, 0d, 0d);
     }
 
     @Test
