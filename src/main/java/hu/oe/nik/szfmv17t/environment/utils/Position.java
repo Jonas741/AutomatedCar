@@ -22,18 +22,32 @@ public class Position {
         this.axisAngle = axisAngle;
         this.directionAngle = directionAngle;
 
+
         this.minimumX = minimumX;
-        this.maximumX = minimumX + width;
         this.minimumY = minimumY;
-        this.maximumY = minimumY + height;
+
+        Vector2d maximum = rotatePoint(minimumX + width,minimumY + height, axisAngle);
+        this.maximumX = maximum.getX();
+        this.maximumY = maximum.getY();
 
         this.calculateCenter();
     }
 
+    private Vector2d rotatePoint (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(minimumX, minimumY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX, posY);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
     private void calculateCenter ()
     {
-        this.centerX = this.minimumX + (this.width / 2);
-        this.centerY = this.minimumY + (this.height / 2);
+        Vector2d center = rotatePoint(this.minimumX + (this.width / 2),this.minimumY + (this.height / 2), axisAngle);
+        this.centerX = center.getX();
+        this.centerY = center.getY();
+//        this.centerX = this.minimumX + (this.width / 2);
+//        this.centerY = this.minimumY + (this.height / 2);
     }
 
     public double getMinimumX ()

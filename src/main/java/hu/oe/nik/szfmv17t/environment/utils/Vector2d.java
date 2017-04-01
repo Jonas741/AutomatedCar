@@ -1,5 +1,7 @@
 package hu.oe.nik.szfmv17t.environment.utils;
 
+import java.util.Vector;
+
 /**
  * Created by Matesz on 2017. 03. 04..
  */
@@ -65,5 +67,15 @@ public class Vector2d {
     public Vector2d substract (Vector2d v2)// irányvektro is lehet this-V2
     {
         return  new Vector2d(this.x - v2.x, this.y - v2.y);
+    }
+
+    public static Vector2d rotateAroundPoint (Vector2d point, Vector2d rotationPoint, double angle)
+    {
+        double x = rotationPoint.getX() + (point.getX() - rotationPoint.getX()) * Math.cos(angle)
+                - (point.getY() - rotationPoint.getY()) * Math.sin(angle);
+        double y = rotationPoint.getY() + (point.getX() - rotationPoint.getX()) * Math.sin(angle)
+                + (point.getY() - rotationPoint.getY()) * Math.cos(angle);
+
+        return new Vector2d(x,y);
     }
 }
