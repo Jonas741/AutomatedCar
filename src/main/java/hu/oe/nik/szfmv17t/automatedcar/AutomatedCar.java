@@ -3,7 +3,6 @@ package hu.oe.nik.szfmv17t.automatedcar;
 
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.powertrainsystem.PowertrainSystem;
-import hu.oe.nik.szfmv17t.environment.domain.Car;
 import hu.oe.nik.szfmv17t.environment.domain.CollidableBase;
 import hu.oe.nik.szfmv17t.environment.utils.Resizer;
 import hu.oe.nik.szfmv17t.environment.utils.Vector2d;
@@ -31,8 +30,8 @@ public class AutomatedCar extends CollidableBase {
     }
 
     /*@Override
-    public void setDirectionAngle(double angle) {
-        this.position.setDirectionAngle(angle + 1.5707963268d);
+    public void setDirectionAngleInRadian(double angle) {
+        this.position.setDirectionAngleInRadian(angle + 1.5707963268d);
     }*/
 
     public void drive() {
@@ -57,12 +56,12 @@ public class AutomatedCar extends CollidableBase {
     public void updateWorldObject() {
         Vector2d direction = new Vector2d(Math.cos(this.getDirectionAngle()), Math.sin(this.getDirectionAngle()));
         if (this.speed > 0) {
-            position.setPositionX(position.getMinimumX() + direction.getX() * getSpeed());
-            position.setPositionY(position.getMinimumY() - direction.getY() * getSpeed());
+            position.setReferencePointX(position.getReferencePointX() + direction.getX() * getSpeed());
+            position.setReferencePointY(position.getReferencePointY() - direction.getY() * getSpeed());
         }
         else {
-            position.setPositionX(position.getMinimumX() - direction.getX() * getSpeed());
-            position.setPositionY(position.getMinimumY() - direction.getY() * getSpeed());
+            position.setReferencePointX(position.getReferencePointX() - direction.getX() * getSpeed());
+            position.setReferencePointY(position.getReferencePointY() - direction.getY() * getSpeed());
         }
     }
 

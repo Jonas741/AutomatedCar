@@ -11,7 +11,7 @@ public final class CollisionDetector {
     }
 
     private static Vector2d[] getCorners(Position collidableObjectPosition) {
-        double rot = collidableObjectPosition.getAxisAngle();
+        double rot = collidableObjectPosition.getAxisAngleInRadian();
         Vector2d center = collidableObjectPosition.getCenter();
         Vector2d[] worldCoords = generateWorldCoords(collidableObjectPosition);
         return rotateWorldCoords(rot, center, worldCoords);
@@ -35,17 +35,17 @@ public final class CollisionDetector {
     private static Vector2d[] generateWorldCoords(Position collidableObjectPosition) {
         Vector2d[] worldCoords = new Vector2d[4];
 
-        worldCoords[0] = new Vector2d(collidableObjectPosition.getMinimumX(),
-                 collidableObjectPosition.getMinimumY()
+        worldCoords[0] = new Vector2d(collidableObjectPosition.getReferencePointX(),
+                 collidableObjectPosition.getReferencePointY()
         );
-        worldCoords[1] = new Vector2d(collidableObjectPosition.getMinimumX() + collidableObjectPosition.getWidth(),
-                 collidableObjectPosition.getMinimumY()
+        worldCoords[1] = new Vector2d(collidableObjectPosition.getReferencePointX() + collidableObjectPosition.getWidth(),
+                 collidableObjectPosition.getReferencePointY()
         );
-        worldCoords[2] = new Vector2d(collidableObjectPosition.getMinimumX() + collidableObjectPosition.getWidth(),
-                 collidableObjectPosition.getMinimumY() + collidableObjectPosition.getHeight()
+        worldCoords[2] = new Vector2d(collidableObjectPosition.getReferencePointX() + collidableObjectPosition.getWidth(),
+                 collidableObjectPosition.getReferencePointY() + collidableObjectPosition.getHeight()
         );
-        worldCoords[3] = new Vector2d(collidableObjectPosition.getMinimumX(),
-                 collidableObjectPosition.getMinimumY() + collidableObjectPosition.getHeight()
+        worldCoords[3] = new Vector2d(collidableObjectPosition.getReferencePointX(),
+                 collidableObjectPosition.getReferencePointY() + collidableObjectPosition.getHeight()
         );
         return worldCoords;
     }

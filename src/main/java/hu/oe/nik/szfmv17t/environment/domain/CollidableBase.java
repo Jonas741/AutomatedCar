@@ -1,13 +1,8 @@
 package hu.oe.nik.szfmv17t.environment.domain;
 
-import hu.oe.nik.szfmv17t.automatedcar.AutomatedCar;
 import hu.oe.nik.szfmv17t.environment.interfaces.ICollidableObject;
 import hu.oe.nik.szfmv17t.environment.utils.Position;
 import hu.oe.nik.szfmv17t.environment.utils.Vector2d;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Created by Bábel Gellért, Budai Krisztián, Molnár Attila on 2017. 03. 04..
@@ -53,14 +48,14 @@ public class CollidableBase extends WorldObjectBase implements ICollidableObject
 //        if (getSpeed()==0) {
 //            return;
 //        }
-//        position.setPositionX(position.getMinimumX()+ oneStep.getX() * getSpeed());
-//        position.setPositionY(position.getMinimumY() + oneStep.getY() * getSpeed());
+//        position.setReferencePointX(position.getReferencePointX()+ oneStep.getX() * getSpeed());
+//        position.setReferencePointY(position.getReferencePointY() + oneStep.getY() * getSpeed());
 //    }
 
     public void updateWorldObject() {
         Vector2d direction = new Vector2d(Math.cos(this.getDirectionAngle()), Math.sin(this.getDirectionAngle()));
-        position.setPositionX(position.getMinimumX() + direction.getX() * getSpeed());
-        position.setPositionY(position.getMinimumY() + direction.getY() * getSpeed());
+        position.setReferencePointX(position.getReferencePointX() + direction.getX() * getSpeed());
+        position.setReferencePointY(position.getReferencePointY() + direction.getY() * getSpeed());
         //step();
     }
 
@@ -98,10 +93,10 @@ public class CollidableBase extends WorldObjectBase implements ICollidableObject
     }
 
     public void setAxisAngle(double value) {
-        this.position.setAxisAngle(value);
+        this.position.setAxisAngleInRadian(value);
     }
 
     public void setDirectionAngle(double value) {
-        this.position.setDirectionAngle(value);
+        this.position.setDirectionAngleInRadian(value);
     }
 }

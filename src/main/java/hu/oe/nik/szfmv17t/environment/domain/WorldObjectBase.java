@@ -2,10 +2,12 @@ package hu.oe.nik.szfmv17t.environment.domain;
 
 import hu.oe.nik.szfmv17t.environment.interfaces.IWorldObject;
 import hu.oe.nik.szfmv17t.environment.utils.Position;
+import hu.oe.nik.szfmv17t.environment.utils.Vector2d;
 
 
 /**
- * Created by Bábel Gellért, Budai Krisztián, Molnár Attila on 2017. 03. 04..
+ * Created by Bábel Gellért, Budai Krisztián, Molnár Attila on 2017. 03. 04.
+ * Modified by: Budai Krisztián, Molnár Attila on 2017. 04. 09.
  */
 public abstract class WorldObjectBase implements IWorldObject {
     protected Position position;
@@ -17,11 +19,11 @@ public abstract class WorldObjectBase implements IWorldObject {
                             , double positionY
                             , double width
                             , double height
-                            , double axisAngle
+                            , double axisAngleInRadian
                             , int zIndex
                             , String imageFilePath
-                            , double directionAngle) {
-        this.position = new Position(positionX, positionY, width, height, axisAngle, directionAngle);
+                            , double directionAngleInRadian) {
+        this.position = new Position(new Vector2d(positionX, positionY), width, height, axisAngleInRadian, directionAngleInRadian);
         this.state = WorldObjectState.Untouched;
         this.imageFilePath = imageFilePath;
         this.zIndex = zIndex;
@@ -29,12 +31,12 @@ public abstract class WorldObjectBase implements IWorldObject {
 
     public double getAxisAngle ()
     {
-        return  this.position.getAxisAngle();
+        return  this.position.getAxisAngleInRadian();
     }
 
     public double getDirectionAngle ()
     {
-        return  this.position.getDirectionAngle();
+        return  this.position.getDirectionAngleInRadian();
     }
 
     public double getCenterX ()
@@ -46,6 +48,10 @@ public abstract class WorldObjectBase implements IWorldObject {
     {
         return this.position.getCenter().getY();
     }
+
+    public double getReferencePointX() { return this.position.getReferencePointX();}
+
+    public double getReferencePointY() {return this.position.getReferencePointY(); }
 
     public String getImageName ()
     {

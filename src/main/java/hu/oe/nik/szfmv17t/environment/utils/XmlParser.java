@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- * Created by Krisztian Juhasz <OE-NIK>
- * Modified by Budai Krisztián, Molnár Attila at 2017.04.01
+ * Created by Krisztian Juhasz <OE-NIK> *
+ * Modified by: Budai Krisztián, Molnár Attila on 2017. 04. 09.
  */
 public class XmlParser {
 
@@ -168,7 +168,7 @@ public class XmlParser {
 
     private Vector2d calculateLeft90 (double posX, double posY, double angle)
     {
-        Vector2d originalReferencePoint = new Vector2d(posX, posX);
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
         Vector2d calculatedReferencePoint = new Vector2d(posX - 176, posY - 525);
 
         return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
@@ -176,7 +176,7 @@ public class XmlParser {
 
     private Vector2d calculateRight90 (double posX, double posY, double angle)
     {
-        Vector2d originalReferencePoint = new Vector2d(posX, posX);
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
         Vector2d calculatedReferencePoint = new Vector2d(posX - 350, posY - 525);
 
         return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
@@ -184,7 +184,7 @@ public class XmlParser {
 
     private Vector2d calculateLeft45 (double posX, double posY, double angle)
     {
-        Vector2d originalReferencePoint = new Vector2d(posX, posX);
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
         Vector2d calculatedReferencePoint = new Vector2d(posX - 53, posY - 371);
 
         return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
@@ -192,7 +192,7 @@ public class XmlParser {
 
     private Vector2d calculateRight45 (double posX, double posY, double angle)
     {
-        Vector2d originalReferencePoint = new Vector2d(posX, posX);
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
         Vector2d calculatedReferencePoint = new Vector2d(posX - 350, posY - 371);
 
         return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
@@ -200,7 +200,7 @@ public class XmlParser {
 
     private Vector2d calculateTJunctionLeft (double posX, double posY, double angle)
     {
-        Vector2d originalReferencePoint = new Vector2d(posX, posX);
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
         Vector2d calculatedReferencePoint = new Vector2d(posX - 875, posY);
 
         return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
@@ -209,7 +209,6 @@ public class XmlParser {
     private double convertMatrixToRadians(double m11, double m12, double m21, double m22) {
         //formula of the angle between the two vectors: a * b = |a| * |b| * cos(beta)
         //where a * b is the scalarProduct
-
         //Our zero degree will be the horizontal right:
         double defaultX = 1;
         double defaultY = 0;
@@ -227,9 +226,12 @@ public class XmlParser {
             angleInRad = 2 * Math.PI - angleInRad;
         }
         //If angle is NaN as a result of transformedVectorLength=0, Math.round() returns 0. It is correct in our cases.
-        angleInRad = Math.round(angleInRad * 100.0) / 100.0;
+        //angleInRad = Math.round(angleInRad * 100.0) / 100.0;
         return angleInRad;
-
+//        double m13 = 0;
+//        double m23 = 0;
+//        double m33 = 1;
+//        return 6.2831853072d - Math.acos((m11 + m22) / 2);
     }
 
     public List<IWorldObject> getWorldObjects() {
