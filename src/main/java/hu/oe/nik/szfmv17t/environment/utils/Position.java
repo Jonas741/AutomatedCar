@@ -1,5 +1,7 @@
 package hu.oe.nik.szfmv17t.environment.utils;
 
+import java.util.Vector;
+
 /**
  * Created by Budai Krisztián, Molnár Attila  on 2017. 03. 04.
  * Modified by: Budai Krisztián, Molnár Attila on 2017. 04. 09.
@@ -57,6 +59,25 @@ public class Position {
         return this.leftUpperCorner.getY();
     }
 
+    public Vector2d getLeftUpperCorner ()
+    {
+        return new Vector2d(this.getReferencePointX(), this.getReferencePointY());
+    }
+
+    public Vector2d getRightUpperCorner ()
+    {
+        return this.rightUpperCorner;
+    }
+
+    public Vector2d getLeftLowerCorner ()
+    {
+        return this.leftLowerCorner;
+    }
+
+    public Vector2d getRightLowerCorner ()
+    {
+        return this.rightLowerCorner;
+    }
 
     public double getAxisAngleInRadian()
     {

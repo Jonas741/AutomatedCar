@@ -14,39 +14,19 @@ public final class CollisionDetector {
         double rot = collidableObjectPosition.getAxisAngleInRadian();
         Vector2d center = collidableObjectPosition.getCenter();
         Vector2d[] worldCoords = generateWorldCoords(collidableObjectPosition);
-        return rotateWorldCoords(rot, center, worldCoords);
-    }
-
-    private static Vector2d[] rotateWorldCoords(double rot, Vector2d center, Vector2d[] worldCoords) {
-        Vector2d[] corners = new Vector2d[4];
-        int counter = 0;
-        for (Vector2d corner : worldCoords) {
-            double x = center.getX() + (corner.getX() - center.getX()) * Math.cos(rot)
-                    - (corner.getY() - center.getY()) * Math.sin(rot);
-            double y = center.getY() + (corner.getX() - center.getX()) * Math.sin(rot)
-                    + (corner.getY() - center.getY()) * Math.cos(rot);
-
-            corners[counter] = new Vector2d(x, y);
-            counter++;
-        }
-        return corners;
+        return worldCoords;
     }
 
     private static Vector2d[] generateWorldCoords(Position collidableObjectPosition) {
         Vector2d[] worldCoords = new Vector2d[4];
 
-        worldCoords[0] = new Vector2d(collidableObjectPosition.getReferencePointX(),
-                 collidableObjectPosition.getReferencePointY()
-        );
-        worldCoords[1] = new Vector2d(collidableObjectPosition.getReferencePointX() + collidableObjectPosition.getWidth(),
-                 collidableObjectPosition.getReferencePointY()
-        );
-        worldCoords[2] = new Vector2d(collidableObjectPosition.getReferencePointX() + collidableObjectPosition.getWidth(),
-                 collidableObjectPosition.getReferencePointY() + collidableObjectPosition.getHeight()
-        );
-        worldCoords[3] = new Vector2d(collidableObjectPosition.getReferencePointX(),
-                 collidableObjectPosition.getReferencePointY() + collidableObjectPosition.getHeight()
-        );
+        worldCoords[0] = collidableObjectPosition.getLeftUpperCorner();
+
+        worldCoords[1] = collidableObjectPosition.getRightUpperCorner();
+
+        worldCoords[2] = collidableObjectPosition.getRightLowerCorner();
+
+        worldCoords[3] = collidableObjectPosition.getLeftLowerCorner();
         return worldCoords;
     }
 
