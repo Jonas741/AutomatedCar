@@ -10,8 +10,13 @@ import hu.oe.nik.szfmv17t.environment.domain.ZebraCrossing;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -32,28 +37,39 @@ public class XmlParser {
 
     private void ReadXml(String pathToXml) {
         try {
-
-            File fXmlFile = new File(pathToXml);
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(fXmlFile);
-
-            Element rootElement = (Element) doc.getElementsByTagName("Scene").item(0);
-            mapHeight = Integer.parseInt(rootElement.getAttribute("height")); 
-            mapWidth = Integer.parseInt(rootElement.getAttribute("width"));
-
-            NodeList objectList = doc.getElementsByTagName("Object");
-            for (int i = 0; i < objectList.getLength(); i++) {
-
-                Node objectNode = objectList.item(i);
-
-                if (objectNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element objectElement = (Element) objectNode;
-                        createObjectFromElement(objectElement);
-                    }
-            }
+            Document doc = getDocument(pathToXml);
+            Element rootElement = getRootElement(doc);
+            setMapDimension(rootElement);
+            processXMLObjects(doc);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private Document getDocument(String pathToXml) throws ParserConfigurationException, SAXException, IOException {
+        File fXmlFile = new File(pathToXml);
+        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+        return dBuilder.parse(fXmlFile);
+    }
+
+    private Element getRootElement(Document doc) {
+        return (Element) doc.getElementsByTagName("Scene").item(0);
+    }
+
+    private void setMapDimension(Element rootElement) {
+        mapHeight = Integer.parseInt(rootElement.getAttribute("height"));
+        mapWidth = Integer.parseInt(rootElement.getAttribute("width"));
+    }
+
+    private void processXMLObjects(Document doc) {
+        NodeList objectList = doc.getElementsByTagName("Object");
+        for (int i = 0; i < objectList.getLength(); i++) {
+            Node objectNode = objectList.item(i);
+            if (objectNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element objectElement = (Element) objectNode;
+                createObjectFromElement(objectElement);
+            }
         }
     }
     
@@ -88,42 +104,62 @@ public class XmlParser {
             roadPainting3 = Integer.parseInt(firstParamAttributes.item(1).getTextContent()); //VALUE
         }
 
+        Vector2d referencePoint = new Vector2d(posX, posY);
         switch (objectElement.getAttribute("type"))
             {
                 case "road_2lane_straight":
-                    mapObjects.add(new Road(posX,posY,350,350,axisAngle,0,"road_2lane_straight.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
-                
+                    mapObjects.add(new Road(posX, posY, 350, 350, axisAngle, 0, "road_2lane_straight.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
+
                 case "road_2lane_90right":
-                    mapObjects.add(new Turn(posX,posY,525,525,axisAngle,0,"road_2lane_90right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
+                    referencePoint = calculateRight90(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 525, 525, axisAngle, 0, "road_2lane_90right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
                 case "road_2lane_90left":
-                    mapObjects.add(new Turn(posX,posY,525,525,axisAngle,0,"road_2lane_90left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
-                
+                    referencePoint = calculateLeft90(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 525, 525, axisAngle, 0, "road_2lane_90left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
+
                 case "road_2lane_tjunctionleft":
-                    mapObjects.add(new Turn(posX,posY,875,1400,axisAngle,0,"road_2lane_tjunctionleft.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
-                case "road_2lane_tjunctionright":   
-                    mapObjects.add(new Turn(posX,posY,875,1400,axisAngle,0,"road_2lane_tjunctionright.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
-                
+                    referencePoint = calculateTJunctionLeft(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 875, 1400, axisAngle, 0, "road_2lane_tjunctionleft.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
+                case "road_2lane_tjunctionright":
+                    mapObjects.add(new Turn(posX, posY, 875, 1400, axisAngle, 0, "road_2lane_tjunctionright.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
+
                 case "road_2lane_45right":
-                    mapObjects.add(new Turn(posX,posY,401,371,axisAngle,0,"road_2lane_45right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
+                    referencePoint = calculateRight45(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
                 case "road_2lane_45left":
-                    mapObjects.add(new Turn(posX,posY,401,371,axisAngle,0,"road_2lane_45left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
-                
+                    referencePoint = calculateLeft45(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    break;
+
                 case "parking_space_parallel":
-                    mapObjects.add(new ParkingLot(posX,posY,138,621,axisAngle,0,"parking_space_parallel.png",axisAngle)); break;
-                
+                    mapObjects.add(new ParkingLot(posX, posY, 138, 621, axisAngle, 0, "parking_space_parallel.png", axisAngle));
+                    break;
+
                 case "crosswalk":
-                    mapObjects.add(new ZebraCrossing(posX,posY,336,197,axisAngle,1,"crosswalk.png",axisAngle)); break;
-                
+                    mapObjects.add(new ZebraCrossing(posX, posY, 336, 197, axisAngle, 1, "crosswalk.png", axisAngle));
+                    break;
+
                 case "roadsign_parking_right":
-                    mapObjects.add(new Sign(posX,posY,80,80,axisAngle,2,"roadsign_parking_right.png",10,0,axisAngle)); break;
+                    mapObjects.add(new Sign(posX, posY, 80, 80, axisAngle, 2, "roadsign_parking_right.png", 10, 0, axisAngle));
+                    break;
                 case "roadsign_priority_stop":
-                    mapObjects.add(new Sign(posX,posY,80,80,axisAngle,2,"roadsign_priority_stop.png",10,0,axisAngle)); break;
+                    mapObjects.add(new Sign(posX, posY, 80, 80, axisAngle, 2, "roadsign_priority_stop.png", 10, 0, axisAngle));
+                    break;
                 case "roadsign_speed_40":
-                    mapObjects.add(new Sign(posX,posY,80,80,axisAngle,2,"roadsign_speed_40.png",10,0,axisAngle)); break;
+                    mapObjects.add(new Sign(posX, posY, 80, 80, axisAngle, 2, "roadsign_speed_40.png", 10, 0, axisAngle));
+                    break;
                 case "roadsign_speed_50":
-                    mapObjects.add(new Sign(posX,posY,80,80,axisAngle,2,"roadsign_speed_50.png",10,0,axisAngle)); break;
+                    mapObjects.add(new Sign(posX, posY, 80, 80, axisAngle, 2, "roadsign_speed_50.png", 10, 0, axisAngle));
+                    break;
                 case "roadsign_speed_60":
-                    mapObjects.add(new Sign(posX,posY,80,80,axisAngle,2,"roadsign_speed_60.png",10,0,axisAngle)); break;
+                    mapObjects.add(new Sign(posX, posY, 80, 80, axisAngle, 2, "roadsign_speed_60.png", 10, 0, axisAngle));
+                    break;
 
                 //FIXME new map objects, needs rework on parser and model
                 case "parking_bollard":
@@ -135,40 +171,123 @@ public class XmlParser {
                 case "parking_space_perpendicular":
                     mapObjects.add(new ParkingLot(posX,posY,295,469,axisAngle,0,"parking_90.png",axisAngle)); break;
                 case "road_2lane_6right":
-                    mapObjects.add(new Turn(posX,posY,369,368,axisAngle,0,"road_2lane_6right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
+                    referencePoint = calculateRight6(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(),369,368,axisAngle,0,"road_2lane_6right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
                 case "road_2lane_6left":
-                    mapObjects.add(new Turn(posX,posY,369,368,axisAngle,0,"road_2lane_6left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
+                    referencePoint = calculateLeft6(posX, posY, axisAngle);
+                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(),369,368,axisAngle,0,"road_2lane_6left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
 
                 case "tree":
                 mapObjects.add(new Tree(posX,posY,142,160,axisAngle,2,"tree.png",20,0,axisAngle)); break;
             }
     }
-    
-    private double convertMatrixToRadians(double m11, double m12, double m21, double m22)
+
+    private Vector2d calculateLeft90 (double posX, double posY, double angle)
     {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 176, posY - 525);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateRight90 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 350, posY - 525);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateLeft45 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 53, posY - 371);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateRight45 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 350, posY - 371);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateTJunctionLeft (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 875, posY);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateLeft6 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 19, posY - 365);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateRight6 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 349, posY - 365);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateRotary (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 1, posY - 874);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateCrossroad1 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 1, posY - 874);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private Vector2d calculateCrossroad2 (double posX, double posY, double angle)
+    {
+        Vector2d originalReferencePoint = new Vector2d(posX, posY);
+        Vector2d calculatedReferencePoint = new Vector2d(posX - 1, posY - 874);
+
+        return Vector2d.rotateAroundPoint(calculatedReferencePoint, originalReferencePoint, angle);
+    }
+
+    private double convertMatrixToRadians(double m11, double m12, double m21, double m22) {
         //formula of the angle between the two vectors: a * b = |a| * |b| * cos(beta)
         //where a * b is the scalarProduct
-        
         //Our zero degree will be the horizontal right:
         double defaultX = 1;
         double defaultY = 0;
 
-        double transformedX = m11*defaultX + m12*defaultY;
-        double transformedY = m21*defaultX + m22*defaultY;
-        
-        double scalarProduct = defaultX * transformedX + defaultY* transformedY;
-        
+        double transformedX = m11 * defaultX + m12 * defaultY;
+        double transformedY = m21 * defaultX + m22 * defaultY;
+
+        double scalarProduct = defaultX * transformedX + defaultY * transformedY;
+
         double defaultVectorLength = Math.sqrt(defaultX * defaultX + defaultY * defaultY);
         double transformedVectorLength = Math.sqrt(transformedX * transformedX + transformedY * transformedY);
-   
+
         double angleInRad = Math.acos(scalarProduct / (defaultVectorLength * transformedVectorLength));
         if (transformedY < 0) {
-            angleInRad = 2*Math.PI - angleInRad;
+            angleInRad = 2 * Math.PI - angleInRad;
         }
         //If angle is NaN as a result of transformedVectorLength=0, Math.round() returns 0. It is correct in our cases.
-        angleInRad = Math.round(angleInRad * 100.0) / 100.0;
+        //angleInRad = Math.round(angleInRad * 100.0) / 100.0;
         return angleInRad;
-
+//        double m13 = 0;
+//        double m23 = 0;
+//        double m33 = 1;
+//        return 6.2831853072d - Math.acos((m11 + m22) / 2);
     }
 
     public List<IWorldObject> getWorldObjects() {

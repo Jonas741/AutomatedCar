@@ -1,69 +1,92 @@
 package hu.oe.nik.szfmv17t.environment.utils;
 
+import java.util.Vector;
+
 /**
- * Created by Budai Krisztián, Molnár Attila  on 2017. 03. 04..
+ * Created by Budai Krisztián, Molnár Attila  on 2017. 03. 04.
+ * Modified by: Budai Krisztián, Molnár Attila on 2017. 04. 09.
  */
 public class Position {
-    private double minimumX, maximumX, minimumY, maximumY;
-    private double centerX, centerY;
+    private Vector2d leftUpperCorner, rightUpperCorner, leftLowerCorner, rightLowerCorner;
+    private Vector2d center;
     private double width, height;
-    private double axisAngle, directionAngle;
+    private double axisAngleInRadian, directionAngleInRadian;
 
-    public Position ( double minimumX
-                    , double minimumY
-                    , double width
-                    , double height
-                    , double axisAngle
-                    , double directionAngle
-                    )
+    public Position ( Vector2d leftUpperCorner
+            , double width
+            , double height
+            , double axisAngleInRadian
+            , double directionAngleInRadian
+    )
     {
+        this.leftUpperCorner = leftUpperCorner;
         this.width = width;
         this.height = height;
-        this.axisAngle = axisAngle;
-        this.directionAngle = directionAngle;
-
-        this.minimumX = minimumX;
-        this.maximumX = minimumX + width;
-        this.minimumY = minimumY;
-        this.maximumY = minimumY + height;
+        this.axisAngleInRadian = axisAngleInRadian;
+        this.directionAngleInRadian = directionAngleInRadian;
 
         this.calculateCenter();
+        this.calculateCorners();
+    }
+
+    private Vector2d rotatePoint (double posX, double posY, double angleInRadian)
+    {
+        Vector2d pointToRotateAround = this.leftUpperCorner;
+        Vector2d pointToRotate = new Vector2d(posX, posY);
+
+        return Vector2d.rotateAroundPoint(pointToRotate, pointToRotateAround, angleInRadian);
     }
 
     private void calculateCenter ()
     {
-        this.centerX = this.minimumX + (this.width / 2);
-        this.centerY = this.minimumY + (this.height / 2);
+        this.center = rotatePoint(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2), this.axisAngleInRadian);
     }
 
-    public double getMinimumX ()
+    private void calculateCorners()
     {
-        return this.minimumX;
+        this.rightUpperCorner = rotatePoint(leftUpperCorner.getX() + this.width, leftUpperCorner.getY(), this.axisAngleInRadian);
+        this.leftLowerCorner = rotatePoint(leftUpperCorner.getX(), leftUpperCorner.getY() + this.height, this.axisAngleInRadian);
+        this.rightLowerCorner = rotatePoint(leftUpperCorner.getX() + this.width, leftUpperCorner.getY() + this.height, this.axisAngleInRadian);
     }
 
-    public double getMinimumY ()
+    public double getReferencePointX()
     {
-        return this.minimumY;
+        return this.leftUpperCorner.getX();
     }
 
-    public double getMaximumX ()
+    public double getReferencePointY()
     {
-        return this.maximumX;
+        return this.leftUpperCorner.getY();
     }
 
-    public double getMaximumY ()
+    public Vector2d getLeftUpperCorner ()
     {
-        return this.maximumY;
+        return new Vector2d(this.getReferencePointX(), this.getReferencePointY());
     }
 
-    public double getAxisAngle ()
+    public Vector2d getRightUpperCorner ()
     {
-        return this.axisAngle;
+        return this.rightUpperCorner;
     }
 
-    public double getDirectionAngle ()
+    public Vector2d getLeftLowerCorner ()
     {
-        return this.directionAngle;
+        return this.leftLowerCorner;
+    }
+
+    public Vector2d getRightLowerCorner ()
+    {
+        return this.rightLowerCorner;
+    }
+
+    public double getAxisAngleInRadian()
+    {
+        return this.axisAngleInRadian;
+    }
+
+    public double getDirectionAngleInRadian()
+    {
+        return this.directionAngleInRadian;
     }
 
     public double getWidth ()
@@ -78,36 +101,49 @@ public class Position {
 
     public Vector2d getCenter ()
     {
-        return new Vector2d(this.centerX,this.centerY);
+        return this.center;
     }
 
-    public void setPositionX (double value)
+    public void setReferencePoint(Vector2d referencePoint)
     {
-        this.minimumX = value;
-        this.maximumX = value + this.width;
+        this.leftUpperCorner = referencePoint;
         this.calculateCenter();
+        this.calculateCorners();
     }
 
-    public void setPositionY (double value)
+    public void setReferencePointX(double value)
     {
-        this.minimumY = value;
-        this.maximumY = value + this.height;
+        this.leftUpperCorner.setX(value);
         this.calculateCenter();
+        this.calculateCorners();
     }
 
-    public void setAxisAngle (double value)
+    public void setReferencePointY(double value)
     {
-        this.axisAngle = value;
+        this.leftUpperCorner.setY(value);
+        this.calculateCenter();
+        this.calculateCorners();
     }
 
-    public void setDirectionAngle (double value)
+    public void setAxisAngleInRadian(double value)
     {
-        this.directionAngle = value;
+        this.axisAngleInRadian = value;
+        this.calculateCenter();
+        this.calculateCorners();
+    }
+
+    public void setDirectionAngleInRadian(double value)
+    {
+        this.directionAngleInRadian = value;
+        this.calculateCenter();
+        this.calculateCorners();
     }
 
     public void rotate (double value)
     {
-        this.axisAngle += value;
-        this.directionAngle += value;
+        this.axisAngleInRadian += value;
+        this.directionAngleInRadian += value;
+        this.calculateCenter();
+        this.calculateCorners();
     }
 }

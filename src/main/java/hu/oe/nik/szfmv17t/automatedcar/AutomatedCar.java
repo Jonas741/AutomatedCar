@@ -33,14 +33,14 @@ public class AutomatedCar extends Car {
 		// Update the position and orientation of the car
 		this.speed = this.powertrainSystem.getVelocity();
 		this.setDirectionAngle(powertrainSystem.getSteeringAngle(this.speed));
-		this.setAxisAngle((-1) * this.getDirectionAngle());
+		this.setAxisAngle((-1) * (this.getDirectionAngle()));
 	}
 
 	@Override
 	public void updateWorldObject() {
 		Vector2d direction = new Vector2d(Math.cos(this.getDirectionAngle()), Math.sin(this.getDirectionAngle()));
 
-		position.setPositionX(position.getMinimumX() + (direction.getY() * getSpeed()));
-		position.setPositionY(position.getMinimumY() - (direction.getX() * getSpeed()));
+		position.setReferencePointX(position.getReferencePointX() + (direction.getY() * getSpeed()));
+		position.setReferencePointY(position.getReferencePointY() - (direction.getX() * getSpeed()));
 	}
 }

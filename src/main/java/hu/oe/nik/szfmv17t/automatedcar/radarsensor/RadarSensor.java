@@ -23,7 +23,7 @@ public class RadarSensor {
 	}
 
 	public Triangle calculateCoordinates(Position carPosition, double carAxisAngle) {
-		Point defaultSensorCoordinate = new Point((int)carPosition.getCenter().getX(), (int)carPosition.getMinimumY());
+		Point defaultSensorCoordinate = new Point((int)carPosition.getCenter().getX(), (int)carPosition.getReferencePointY());
 		Point rotatedSensorCoordinate = rotatePoint(carPosition.getCenter().getX(),carPosition.getCenter().getY(),carAxisAngle, defaultSensorCoordinate);
 
 		Point defaultLeftCoordinate = new Point((int)(carPosition.getCenter().getX()-triangleAdjacentSideLength), (int)(defaultSensorCoordinate.getY()-viewLengthInCoordinates));
