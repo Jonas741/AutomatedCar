@@ -1,14 +1,19 @@
 package hu.oe.nik.szfmv17t.automatedcar.powertrainsystem;
 
-
 import hu.oe.nik.szfmv17t.automatedcar.SystemComponent;
 import hu.oe.nik.szfmv17t.automatedcar.bus.Signal;
+import hu.oe.nik.szfmv17t.automatedcar.bus.SignalCarList;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.AutoGearStates;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.AutomaticParkingStates;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.DirectionIndicator;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.DirectionIndicatorStates;
+import hu.oe.nik.szfmv17t.environment.interfaces.IWorldObject;
+import hu.oe.nik.szfmv17t.environment.utils.InWay;
+import static hu.oe.nik.szfmv17t.environment.utils.InWay.ChooseCars;
 import hu.oe.nik.szfmv17t.physics.SpeedControl;
 import hu.oe.nik.szfmv17t.physics.SteeringControl;
+import java.awt.geom.Point2D;
+import java.util.List;
 
 public class PowertrainSystem extends SystemComponent {
 
@@ -37,23 +42,16 @@ public class PowertrainSystem extends SystemComponent {
     // Only these are available trough getters
     private int wheelState = 0;
 
-
-
-
     public PowertrainSystem(double height, double width, double carWeight) {
         super();
         this.speedControl = new SpeedControl(carWeight);
         this.steeringControl = new SteeringControl();
     }
 
-
-
     @Override
     public void loop() {
         // TODO write this
     }
-
-
 
     @Override
     public void receiveSignal(Signal s) {
@@ -94,21 +92,23 @@ public class PowertrainSystem extends SystemComponent {
             case CAMERA_SENSOR_ID:
                 break;
             default:
-                // ignore other signals
+                if (s instanceof SignalCarList) {
+
+                    SignalCarList signal = (SignalCarList) s;
+                    Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
+                    List<IWorldObject> cars= ChooseCars(signal.getCarList());
+                    IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
+                    System.out.println("Ultrasonic sensor: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
+                }
         }
     }
-
-
 
     public double getSteeringAngle(double carVelocity) {
         return steeringControl.calculateAngle(carVelocity, this.wheelState);
     }
-
-
 
     public double getVelocity() {
         return speedControl.calculateVelocity();
     }
 
 }
-

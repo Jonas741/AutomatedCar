@@ -6,6 +6,7 @@
 package hu.oe.nik.szfmv17t.environment.utils;
 
 import hu.oe.nik.szfmv17t.automatedcar.AutomatedCar;
+import hu.oe.nik.szfmv17t.environment.domain.Car;
 import hu.oe.nik.szfmv17t.environment.interfaces.IWorldObject;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
@@ -36,6 +37,29 @@ public class InWay {
         r.add(far0);
         r.add(far1);
         return r;
+    }
+    
+    public static List<IWorldObject> ChooseCars(List<IWorldObject> objectsIn){
+        List<IWorldObject> s= new ArrayList<IWorldObject>();
+        for(IWorldObject obj:objectsIn){
+            if (obj instanceof Car) {
+                s.add(obj);
+            }
+        }
+        return s;
+    }
+    
+    public static IWorldObject ChooseClosest(Point2D.Double carCenter,List<IWorldObject> objectsIn){
+        int mini=0;
+        double dist= new Point2D.Double(objectsIn.get(mini).getCenterX(),objectsIn.get(mini).getCenterY()).distance(carCenter);
+        for(IWorldObject obj:objectsIn){
+            Point2D.Double detectedObject = new Point2D.Double(obj.getCenterX(),obj.getCenterY());
+            if (detectedObject.distance(carCenter)<dist) {
+                mini=objectsIn.indexOf(obj);
+                dist=detectedObject.distance(carCenter);
+            }
+        }
+        return objectsIn.get(mini);
     }
     private static Rectangle2D.Double RectangleCrafterBack(IWorldObject obj) {
         Point2D.Double car0 = new Point2D.Double(obj.getCenterX() - obj.getWidth() / 2, obj.getCenterY() + obj.getHeight() / 2);
