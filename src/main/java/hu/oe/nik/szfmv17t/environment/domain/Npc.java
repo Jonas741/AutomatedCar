@@ -31,7 +31,7 @@ public class Npc extends CollidableBase {
         Vector2d destination = path.get(pathIndex);
         Vector2d directionVector = destination.substract(new Vector2d(this.getCenterX(), this.getCenterY())).unit();
         this.setDirectionAngle(Math.atan2(directionVector.getY(), directionVector.getX()));
-        this.setAxisAngle(this.getDirectionAngle() - 1.5707963268d);
+        this.setAxisAngle(this.getDirectionAngle());
     }
 
     private void checkDestinationRange() {
