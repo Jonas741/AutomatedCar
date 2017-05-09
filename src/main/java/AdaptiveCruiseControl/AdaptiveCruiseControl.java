@@ -5,10 +5,46 @@
  */
 package AdaptiveCruiseControl;
 
+import hu.oe.nik.szfmv17t.automatedcar.AutomatedCar;
+import hu.oe.nik.szfmv17t.automatedcar.SystemComponent;
+import hu.oe.nik.szfmv17t.automatedcar.bus.Signal;
+import hu.oe.nik.szfmv17t.automatedcar.bus.SignalCarList;
+import hu.oe.nik.szfmv17t.environment.interfaces.IWorldObject;
+import hu.oe.nik.szfmv17t.environment.utils.InWay;
+import static hu.oe.nik.szfmv17t.environment.utils.InWay.ChooseCars;
+import static hu.oe.nik.szfmv17t.environment.utils.InWay.InWaySortCarFront;
+import java.awt.geom.Point2D;
+import java.util.List;
+
 /**
  *
  * @author Gellert Babel <OE-NIK>
  */
-public class AdaptiveCruiseControl {
+public class AdaptiveCruiseControl extends SystemComponent{
+
+    public Boolean activated;
+    public AutomatedCar car;
+    
+    @Override
+    public void loop() {
+        
+    }
+
+    @Override
+    public void receiveSignal(Signal s) {
+        if (s instanceof SignalCarList) {
+
+                    SignalCarList signal = (SignalCarList) s;
+                    Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
+                    List<IWorldObject> cars= ChooseCars(signal.getCarList());
+                    if(cars==null){
+                        return;
+                    }
+                    car=(AutomatedCar) signal.getCar();
+                    cars= InWaySortCarFront(car,cars);
+                    IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
+                    System.out.println("Ultrasonic sensor: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
+                }
+    }
     
 }

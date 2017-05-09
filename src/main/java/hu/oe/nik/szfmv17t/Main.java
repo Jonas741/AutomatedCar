@@ -1,5 +1,6 @@
 package hu.oe.nik.szfmv17t;
 
+import AdaptiveCruiseControl.AdaptiveCruiseControl;
 import hu.oe.nik.szfmv17t.automatedcar.radarsensor.RadarController;
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.camerasensor.CameraSensorController;
@@ -64,7 +65,9 @@ public class Main {
 		w.addObjectToWorld(npcBlueCar2);
 		w.addObjectToWorld(npcBlackVan1);
 
-
+                AdaptiveCruiseControl control = new AdaptiveCruiseControl();
+                control.activated=true;
+                control.car=car;
 		// init visualisation module with the world
 		vis.init(w);
 		Thread drawThread = new Thread(vis);

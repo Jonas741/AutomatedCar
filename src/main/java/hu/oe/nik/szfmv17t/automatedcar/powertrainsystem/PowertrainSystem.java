@@ -92,14 +92,7 @@ public class PowertrainSystem extends SystemComponent {
             case CAMERA_SENSOR_ID:
                 break;
             default:
-                if (s instanceof SignalCarList) {
-
-                    SignalCarList signal = (SignalCarList) s;
-                    Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
-                    List<IWorldObject> cars= ChooseCars(signal.getCarList());
-                    IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
-                    System.out.println("Ultrasonic sensor: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
-                }
+                ;
         }
     }
 
