@@ -32,18 +32,23 @@ public class AdaptiveCruiseControl extends SystemComponent{
 
     @Override
     public void receiveSignal(Signal s) {
-        if (activated && s instanceof SignalCarList) {
-
+        if (activated && s != null && s instanceof SignalCarList) {
+            try{
                     SignalCarList signal = (SignalCarList) s;
-                    Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
                     List<IWorldObject> cars= ChooseCars(signal.getCarList());
-                    if(cars==null){
+                    if(cars==null || s.getData().doubleValue()==0 || signal.getCarList().isEmpty()){
                         return;
                     }
+                    Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
+
                     car=(AutomatedCar) signal.getCar();
                     cars= InWaySortCarFront(car,cars);
                     IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
                     System.out.println("Ultrasonic sensor: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
+            }
+            catch(Exception e){
+                
+            }
                 }
     }
     
