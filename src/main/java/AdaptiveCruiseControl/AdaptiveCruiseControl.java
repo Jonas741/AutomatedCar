@@ -32,7 +32,7 @@ public class AdaptiveCruiseControl extends SystemComponent{
 
     @Override
     public void receiveSignal(Signal s) {
-        if (s instanceof SignalCarList) {
+        if (activated && s instanceof SignalCarList) {
 
                     SignalCarList signal = (SignalCarList) s;
                     Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
