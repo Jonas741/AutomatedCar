@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AdaptiveCruiseControl;
+package hu.oe.nik.szfmv17t.AdaptiveCruiseControl;
 
 import hu.oe.nik.szfmv17t.automatedcar.AutomatedCar;
 import hu.oe.nik.szfmv17t.automatedcar.SystemComponent;
@@ -44,6 +44,7 @@ public class AdaptiveCruiseControl extends SystemComponent{
                     car=(AutomatedCar) signal.getCar();
                     cars= InWaySortCarFront(car,cars);
                     IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
+                    IsTooClose(carCenter.distance(new Point2D.Double(obj.getCenterX(),obj.getCenterY())));
                     System.out.println("Ultrasonic sensor: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
             }
             catch(Exception e){
@@ -51,5 +52,10 @@ public class AdaptiveCruiseControl extends SystemComponent{
             }
                 }
     }
-    
+    private void IsTooClose(double distance){
+        double metersec=car.getSpeed()/3.6;
+        if (metersec*2>distance) {
+            /// TODO: Break!
+        }
+    }
 }

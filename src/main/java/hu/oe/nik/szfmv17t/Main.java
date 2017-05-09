@@ -1,6 +1,6 @@
 package hu.oe.nik.szfmv17t;
 
-import AdaptiveCruiseControl.AdaptiveCruiseControl;
+import hu.oe.nik.szfmv17t.AdaptiveCruiseControl.AdaptiveCruiseControl;
 import hu.oe.nik.szfmv17t.automatedcar.radarsensor.RadarController;
 import hu.oe.nik.szfmv17t.automatedcar.bus.VirtualFunctionBus;
 import hu.oe.nik.szfmv17t.automatedcar.camerasensor.CameraSensorController;
