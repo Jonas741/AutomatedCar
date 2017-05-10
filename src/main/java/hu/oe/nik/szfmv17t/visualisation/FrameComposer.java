@@ -78,7 +78,7 @@ public class FrameComposer {
 
         for (IWorldObject object: worldObjects)
         {
-            Rectangle objectRectangle = getRectangleFromWorldObject(object);
+            // NOT USED: Rectangle objectRectangle = getRectangleFromWorldObject(object);
             //if (objectRectangle != null && rectangleOverlaps(cameraRectangle,objectRectangle))
                 visibleObjects.add(object);
         }

@@ -30,6 +30,9 @@ public class Position {
         this.calculateCenter();
         this.calculateCorners();
     }
+    public void SetRealCenter(Vector2d oo){
+        this.realCenter=new Vector2d(oo.getX() + (this.width / 2), oo.getY() + (this.height / 2));
+    }
 
     private Vector2d rotatePoint (double posX, double posY, double angleInRadian)
     {
@@ -43,7 +46,7 @@ public class Position {
     {
         //this.centerX = this.minimumX + (this.width / 2);
         //this.centerY = this.minimumY + (this.height / 2);
-        this.realCenter=new Vector2d(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2));
+        
         this.center = rotatePoint(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2), this.axisAngleInRadian);
     }
 
