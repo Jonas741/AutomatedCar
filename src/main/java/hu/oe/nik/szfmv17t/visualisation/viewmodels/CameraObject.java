@@ -46,10 +46,10 @@ public class CameraObject
     {
         setWorldObject(object);
 
-        double carX = car.getCenterX()/Config.SCALE;
-        double carY = car.getCenterY()/Config.SCALE;
-        double objectX = object.getCenterX()/Config.SCALE;
-        double objectY = object.getCenterY()/Config.SCALE;
+        double carX = car.getVisualRefCenter().getX()/Config.SCALE;
+        double carY = car.getVisualRefCenter().getY()/Config.SCALE;
+        double objectX = object.getVisualRefCenter().getX()/Config.SCALE;
+        double objectY = object.getVisualRefCenter().getY()/Config.SCALE;
 
         double offsetX = (carX - objectX);
         double offsetY = (carY - objectY);

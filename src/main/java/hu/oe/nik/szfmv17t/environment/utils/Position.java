@@ -43,8 +43,8 @@ public class Position {
     {
         //this.centerX = this.minimumX + (this.width / 2);
         //this.centerY = this.minimumY + (this.height / 2);
-        this.center=new Vector2d(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2));
-        this.realCenter = rotatePoint(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2), this.axisAngleInRadian);
+        this.realCenter=new Vector2d(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2));
+        this.center = rotatePoint(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2), this.axisAngleInRadian);
     }
 
     private void calculateCorners()
