@@ -12,7 +12,14 @@ public class Position {
     private Vector2d center;
     private double width, height;
     private double axisAngleInRadian, directionAngleInRadian;
-    public Vector2d realCenter;
+    private Vector2d realCenter;
+
+    public Vector2d getRealCenter() {
+        if (realCenter==null) {
+            return center;
+        }
+        return realCenter;
+    }
 
     public Position ( Vector2d leftUpperCorner
             , double width
