@@ -1,5 +1,6 @@
 package hu.oe.nik.szfmv17t.environment.utils;
 
+import java.awt.geom.Point2D;
 import java.util.Vector;
 
 /**
@@ -11,6 +12,7 @@ public class Position {
     private Vector2d center;
     private double width, height;
     private double axisAngleInRadian, directionAngleInRadian;
+    public Vector2d realCenter;
 
     public Position ( Vector2d leftUpperCorner
             , double width
@@ -39,7 +41,10 @@ public class Position {
 
     private void calculateCenter ()
     {
-        this.center = rotatePoint(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2), this.axisAngleInRadian);
+        //this.centerX = this.minimumX + (this.width / 2);
+        //this.centerY = this.minimumY + (this.height / 2);
+        this.center=new Vector2d(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2));
+        this.realCenter = rotatePoint(leftUpperCorner.getX() + (this.width / 2), leftUpperCorner.getY() + (this.height / 2), this.axisAngleInRadian);
     }
 
     private void calculateCorners()
