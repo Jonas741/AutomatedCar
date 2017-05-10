@@ -36,7 +36,7 @@ public class AdaptiveCruiseControl extends SystemComponent{
             try{
                     SignalCarList signal = (SignalCarList) s;
                     List<IWorldObject> cars= ChooseCars(signal.getCarList());
-                    if(cars==null || s.getData().doubleValue()==0 || signal.getCarList().isEmpty()){
+                    if(cars.isEmpty() || s.getData().doubleValue()==0 || signal.getCarList().isEmpty()){
                         return;
                     }
                     Point2D.Double carCenter=new Point2D.Double(signal.getCar().getCenterX(),signal.getCar().getCenterY());
@@ -45,7 +45,7 @@ public class AdaptiveCruiseControl extends SystemComponent{
                     cars= InWaySortCarFront(car,cars);
                     IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
                     IsTooClose(carCenter.distance(new Point2D.Double(obj.getCenterX(),obj.getCenterY())));
-                    System.out.println("Ultrasonic sensor: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
+                    System.out.println("Closest in Way car: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
             }
             catch(Exception e){
                 
@@ -53,8 +53,8 @@ public class AdaptiveCruiseControl extends SystemComponent{
                 }
     }
     private void IsTooClose(double distance){
-        double metersec=car.getSpeed()/3.6;
-        if (metersec*2>distance) {
+        double metersec=car.getSpeed();
+        if (metersec>distance) {
             /// TODO: Break!
         }
     }
