@@ -81,5 +81,8 @@ public abstract class WorldObjectBase implements IWorldObject {
     {
         return this.position.getHeight();
     }
+    public Vector2d getVisualRefCenter (){
+        return this.position.getRealCenter();
+    }
 }
 

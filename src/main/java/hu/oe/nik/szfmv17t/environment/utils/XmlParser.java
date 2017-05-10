@@ -105,6 +105,8 @@ public class XmlParser {
         }
 
         Vector2d referencePoint = new Vector2d(posX, posY);
+        Turn s;
+        Turn s2;
         switch (objectElement.getAttribute("type"))
             {
                 case "road_2lane_straight":
@@ -113,16 +115,28 @@ public class XmlParser {
 
                 case "road_2lane_90right":
                     referencePoint = calculateRight90(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 525, 525, axisAngle, 0, "road_2lane_90right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    s= new Turn(referencePoint.getX(), referencePoint.getY(), 525, 525, axisAngle, 0, "road_2lane_90right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2= new Turn(posX,posY, 525, 525, axisAngle, 0, "road_2lane_90right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    //s.getPosition().SetRealCenter(new Vector2d(posX, posY));
+                    mapObjects.add(s);
                     break;
                 case "road_2lane_90left":
                     referencePoint = calculateLeft90(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 525, 525, axisAngle, 0, "road_2lane_90left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    s= new Turn(referencePoint.getX(), referencePoint.getY(), 525, 525, axisAngle, 0, "road_2lane_90left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2= new Turn(posX, posY, 525, 525, axisAngle, 0, "road_2lane_90left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    //s.getPosition().SetRealCenter(new Vector2d(posX, posY));
+                    mapObjects.add(s);
                     break;
 
                 case "road_2lane_tjunctionleft":
                     referencePoint = calculateTJunctionLeft(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 875, 1400, axisAngle, 0, "road_2lane_tjunctionleft.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    s= new Turn(referencePoint.getX(), referencePoint.getY(), 875, 1400, axisAngle, 0, "road_2lane_tjunctionleft.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2= new Turn(posX, posY, 875, 1400, axisAngle, 0, "road_2lane_tjunctionleft.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    //s.getPosition().SetRealCenter(new Vector2d(posX, posY));
+                    mapObjects.add(s);
                     break;
                 case "road_2lane_tjunctionright":
                     mapObjects.add(new Turn(posX, posY, 875, 1400, axisAngle, 0, "road_2lane_tjunctionright.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
@@ -130,11 +144,19 @@ public class XmlParser {
 
                 case "road_2lane_45right":
                     referencePoint = calculateRight45(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    s=new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2=new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45right.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    //s.getPosition().SetRealCenter(new Vector2d(posX, posY));                    
+                    mapObjects.add(s);
                     break;
                 case "road_2lane_45left":
                     referencePoint = calculateLeft45(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3));
+                    s= new Turn(referencePoint.getX(), referencePoint.getY(), 401, 371, axisAngle, 0, "road_2lane_45left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2= new Turn(posX, posY, 401, 371, axisAngle, 0, "road_2lane_45left.png", axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    //s.getPosition().SetRealCenter(new Vector2d(posX, posY));
+                    mapObjects.add(s);
                     break;
 
                 case "parking_space_parallel":
@@ -172,10 +194,17 @@ public class XmlParser {
                     mapObjects.add(new ParkingLot(posX,posY,295,469,axisAngle,0,"parking_90.png",axisAngle)); break;
                 case "road_2lane_6right":
                     referencePoint = calculateRight6(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(),369,368,axisAngle,0,"road_2lane_6right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
+                    s= new Turn(referencePoint.getX(), referencePoint.getY(),369,368,axisAngle,0,"road_2lane_6right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2= new Turn(posX, posY,369,368,axisAngle,0,"road_2lane_6right.png",axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    mapObjects.add(s);
                 case "road_2lane_6left":
                     referencePoint = calculateLeft6(posX, posY, axisAngle);
-                    mapObjects.add(new Turn(referencePoint.getX(), referencePoint.getY(),369,368,axisAngle,0,"road_2lane_6left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3)); break;
+                    s= new Turn(referencePoint.getX(), referencePoint.getY(),369,368,axisAngle,0,"road_2lane_6left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s2= new Turn(posX, posY,369,368,axisAngle,0,"road_2lane_6left.png",axisAngle, roadPainting1, roadPainting2, roadPainting3);
+                    s.getPosition().SetRealCenter(s2.getPosition().getCenter());
+                    //s.getPosition().SetRealCenter(new Vector2d(posX, posY));
+                    mapObjects.add(s);
 
                 case "tree":
                 mapObjects.add(new Tree(posX,posY,142,160,axisAngle,2,"tree.png",20,0,axisAngle)); break;

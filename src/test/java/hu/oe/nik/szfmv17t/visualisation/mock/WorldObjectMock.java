@@ -2,6 +2,7 @@ package hu.oe.nik.szfmv17t.visualisation.mock;
 
 import hu.oe.nik.szfmv17t.environment.domain.WorldObjectState;
 import hu.oe.nik.szfmv17t.environment.interfaces.IWorldObject;
+import hu.oe.nik.szfmv17t.environment.utils.Vector2d;
 
 public class WorldObjectMock implements IWorldObject {
     private double x, y, width, height;
@@ -50,6 +51,11 @@ public class WorldObjectMock implements IWorldObject {
 
     @Override
     public WorldObjectState getState() {
+        return null;
+    }
+
+    @Override
+    public Vector2d getVisualRefCenter() {
         return null;
     }
 }
