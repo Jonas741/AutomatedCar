@@ -44,6 +44,9 @@ public class AdaptiveCruiseControl extends SystemComponent{
                     car=(AutomatedCar) signal.getCar();
                     cars= InWaySortCarFront(car,cars);
                     IWorldObject obj= InWay.ChooseClosest(carCenter, cars);
+                    if (obj==car) {
+                    return;
+                }
                     IsTooClose(carCenter.distance(new Point2D.Double(obj.getCenterX(),obj.getCenterY())));
                     System.out.println("Closest in Way car: " + signal.getData() + " x:" + obj.getCenterX()+" y:"+obj.getCenterY()+" "+signal.getCar().getImageName());
             }
@@ -55,7 +58,7 @@ public class AdaptiveCruiseControl extends SystemComponent{
     private void IsTooClose(double distance){
         double metersec=car.getSpeed();
         if (metersec>distance) {
-            /// TODO: Break!
+           car.setSpeed(0);
         }
     }
 }

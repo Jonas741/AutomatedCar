@@ -4,6 +4,7 @@ import hu.oe.nik.szfmv17t.automatedcar.SystemComponent;
 import hu.oe.nik.szfmv17t.automatedcar.bus.Signal;
 import hu.oe.nik.szfmv17t.automatedcar.bus.SignalCarList;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.AutoGearStates;
+import hu.oe.nik.szfmv17t.environment.domain.WorldObjectState;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.AutomaticParkingStates;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.DirectionIndicator;
 import hu.oe.nik.szfmv17t.automatedcar.hmi.DirectionIndicatorStates;
@@ -96,12 +97,15 @@ public class PowertrainSystem extends SystemComponent {
         }
     }
 
-    public double getSteeringAngle(double carVelocity) {
-        return steeringControl.calculateAngle(carVelocity, this.wheelState);
+	public double getSteeringAngle(double carVelocity) {
+		return steeringControl.calculateAngle(carVelocity, this.wheelState);
+	}
+
+    public double getVelocity(WorldObjectState state) {
+        return this.speedControl.calculateVelocity(state);
     }
 
-    public double getVelocity() {
-        return speedControl.calculateVelocity();
-    }
-
+	public SpeedControl getSpeedControl() {
+		return speedControl;
+	}
 }
